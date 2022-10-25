@@ -20,6 +20,16 @@ class Bike(models.Model):
     def get_absolute_url(self):
         return reverse('detail', kwargs={'bike_id': self.id})
 
+class Route(models.Model):
+    name = models.CharField(max_length=100)
+    location = models.CharField(max_length=100)
+    distance = models.IntegerField('distance (miles)')
+    altitude = models.IntegerField('altitude gain')
+    rwgps_url = models.CharField('Ride with GPS link', max_length=250)
+
+    def __str__(self):
+        return self.name
+
 class Ride(models.Model):
     title = models.CharField(max_length=100)
     date = models.DateField()
@@ -30,9 +40,11 @@ class Ride(models.Model):
     )
 
     bike = models.ForeignKey(Bike, on_delete=models.CASCADE)
+    route = models.ForeignKey(Route, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.title} on {self.date}"
 
     class Meta:
         ordering = ['date']
+

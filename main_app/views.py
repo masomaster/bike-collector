@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 
-from .models import Bike
+from .models import Bike, Ride, Route
 from .forms import RideForm
 
 def home(request):
@@ -40,3 +40,7 @@ class BikeUpdate(UpdateView):
 class BikeDelete(DeleteView):
     model = Bike
     success_url = '/bikes/'
+
+class RideCreate(CreateView):
+    model = Ride
+    fields = ['title', 'date', 'type']
