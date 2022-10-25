@@ -5,15 +5,23 @@
 
 {% for bike in bikes %}
   <div class="card">
-    <div class="card-content">
-      <span class="card-title">{{ bike.nickname }}</span>
-      <p>Brand: {{ bike.brand }}</p>
-      <p>Model: {{ bike.model }}</p>
-      <p>Year: {{ bike.year }}</p>
-      <p>Type: {{ bike.type }}</p>
-      <p>Nickname: {{ bike.nickname }}</p>
-      <p>Description: {{ bike.description }}</p>
-    </div>
+    <a href="{% url 'detail' bike.id %}">
+      <div class="card-content">
+        <span class="card-title">
+          {% if bike.nickname %}
+            {{bike.nickname}} 
+          {% else %} 
+            {{bike.brand}} 
+          {% endif %}
+        </span>
+        <p>Brand: {{ bike.brand }}</p>
+        <p>Model: {{ bike.model }}</p>
+        <p>Year: {{ bike.year }}</p>
+        <p>Type: {{ bike.type }}</p>
+        <p>Nickname: {{ bike.nickname }}</p>
+        <p>Description: {{ bike.description }}</p>
+      </div>
+    </a>
   </div>
 {% endfor %}
 

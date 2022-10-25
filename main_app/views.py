@@ -1,26 +1,42 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from ast import Del
+from django.shortcuts import render, redirect
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-class Bike:
-    def __init__(self, brand, model, year, type, nickname, description):
-        self.brand = brand
-        self.model = model
-        self.year = year
-        self.type = type
-        self.nickname = nickname
-        self.description = description
 
-bikes = [
-    Bike('Bontrager', 'Race Lite', 1997, 'Cross-country mountain', 'Bob', 'loves singletrack'),
-    Bike('Eddy Merckx', 'Mourenx 69', 'Endurance road', 2016, 'Eddy', 'excels at everything'),
-    Bike('Guardian', 'Ethos', 2021, 'Kids', '', 'great first bike for kids!'),
-]
+from .models import Bike
+from .forms import RideForm
 
 def home(request):
-    return HttpResponse('<h1>Welcome to the Bike Collector!</h1>')
+    return render(request, 'home.html')
 
 def about(request):
     return render(request, 'about.html')
 
 def bikes_index(request):
+    bikes = Bike.objects.all()
     return render(request, 'bikes/index.html', {'bikes': bikes})
+
+def bikes_detail(request, bike_id):
+    bike = Bike.objects.get(id=bike_id)
+    ride_form = RideForm()
+    return render(request, 'bikes/detail.html', {'bike': bike, 'ride_form': ride_form})
+
+def add_ride(request, bike_id):
+    form = RideForm(request.POST)
+    if form.is_valid():
+        new_ride = form.save(commit=False)
+        new_ride.bike_id = bike_id
+        new_ride.save()
+    return redirect('detail', bike_id=bike_id)
+
+class BikeCreate(CreateView):
+    model = Bike
+    fields = '__all__'
+
+class BikeUpdate(UpdateView):
+    model = Bike
+    fields = '__all__'
+
+class BikeDelete(DeleteView):
+    model = Bike
+    success_url = '/bikes/'
