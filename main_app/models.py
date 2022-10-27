@@ -6,6 +6,14 @@ RIDE_TYPES = (
     ('M', 'Mountain')
 )
 
+NUTRITION_TYPES = (
+    ('W', 'Water'),
+    ('G', 'Gel'),
+    ('B', 'Bar'),
+    ('C', 'Chews'),
+    ('S', 'Sports drink'),
+)
+
 class Bike(models.Model):
     brand = models.CharField(max_length=100)
     model = models.CharField(max_length=100)
@@ -30,6 +38,24 @@ class Route(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('route_detail', kwargs={'pk': self.id})
+
+class Nutrition(models.Model):
+    name = models.CharField(max_length=100)
+    calories = models.IntegerField('Calories per serving/bottle')
+    type = models.CharField(
+        max_length=1,
+        choices=NUTRITION_TYPES,
+        default=NUTRITION_TYPES[0][0]
+    )
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['name']
+
 class Ride(models.Model):
     title = models.CharField(max_length=100)
     date = models.DateField()
@@ -38,7 +64,7 @@ class Ride(models.Model):
         choices=RIDE_TYPES,
         default=RIDE_TYPES[0][0]
     )
-
+    nutrition = models.ManyToManyField(Nutrition)
     bike = models.ForeignKey(Bike, on_delete=models.CASCADE)
     route = models.ForeignKey(Route, on_delete=models.CASCADE)
 
@@ -48,3 +74,11 @@ class Ride(models.Model):
     class Meta:
         ordering = ['date']
 
+    def get_absolute_url(self):
+        return reverse('ride_detail', kwargs={'pk': self.id})
+
+# class NutritionPlan(models.Model):
+#     nutrient = models.ManyToManyField(Nutrition)
+#     time = models.CharField(max_length=30)
+
+#     ride = models.ForeignKey(Ride, on_delete=models.CASCADE)

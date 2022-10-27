@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>All My Routes</h1>
+<ul>
+    {% for route in object_list %}
+    <div class="card">
+        <a href = "{% url 'route_detail' route.id %}">
+            <div class="card-content">
+                <span class="card-title">{{ route.name }}</span>    
+                    <p>Location: {{ route.location }}</p>
+                    <p>Distance: {{ route.distance }}</p>
+            </div>
+        </a>
+    </div>
+    {% endfor %}
+</ul>
+
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Ride Details</h1>
+
+THIS IS DISCONTINUED FOR NOW
+<div class="row">
+  <div class="col s6">
+    <div class="card">
+      <div class="card-content">
+        <span class="card-title">
+         {{ ride.title }}
+        </span>
+        <p>Date: {{ ride.date }}</p>
+        <p>Type: {{ ride.get_type_display }}</p>
+        <p>Bike: <a href="{% url 'bike_detail' ride.bike.id %}">{{ ride.bike }}</a></p>
+        <p>Route: <a href="{% url 'route_detail' ride.route.id %}">{{ ride.route }}</a></p>
+        <p>Distance: {{ ride.route.distance }}</p>
+      </div>
+      <div class="card-action">
+        <a href="{% url 'rides_update' ride.id %}">Edit</a>
+        <a href="{% url 'rides_delete' ride.id %}">Delete</a>
+      </div>
+    </div>
+    {% for thing in nutrition %}
+      {{ nutrition.name }}
+    {% endfor %} 
+  </div>
+</div>
+{% endblock %}

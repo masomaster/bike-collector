@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>All My Rides</h1>
+<ul>
+    {% for ride in object_list %}
+    <div class="card">
+        <a href = "{% url 'ride_detail' ride.id %}">
+            <div class="card-content">
+                <span class="card-title">{{ ride.title }}</span>    
+                    <p>Date: {{ ride.title }}</p>
+                    <p>Distance: {{ ride.route.distance }} miles</p>
+            </div>
+        </a>
+    </div>
+    {% endfor %}
+</ul>
+
+{% endblock %}
