@@ -29,7 +29,7 @@
           <p>Location: {{ route.location }}</p>
           <p>Distance: {{ route.distance }}</p>
           <p>Altitude gain: {{ route.altitude }}</p>
-          <p>Link: <a href="{{ rwgps_url }}">{{ route.rwgps_url }}</a></p>
+          <p>Link: <a href="{{ route.rwgps_url }}">{{ route.rwgps_url }}</a></p>
         </div>
         <div class="card-action">
           <a href="{% url 'routes_update' route.id %}">Edit</a>

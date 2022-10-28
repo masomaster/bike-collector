@@ -64,7 +64,6 @@ class Ride(models.Model):
         choices=RIDE_TYPES,
         default=RIDE_TYPES[0][0]
     )
-    nutrition = models.ManyToManyField(Nutrition)
     bike = models.ForeignKey(Bike, on_delete=models.CASCADE)
     route = models.ForeignKey(Route, on_delete=models.CASCADE)
 
@@ -77,8 +76,10 @@ class Ride(models.Model):
     def get_absolute_url(self):
         return reverse('ride_detail', kwargs={'ride_id': self.id})
 
-# class NutritionPlan(models.Model):
-#     nutrient = models.ManyToManyField(Nutrition)
-#     time = models.CharField(max_length=30)
+class NutritionPlan(models.Model):
+    time = models.CharField(max_length=50)
+    nutrition = models.ManyToManyField(Nutrition)
+    ride = models.ForeignKey(Ride, on_delete=models.CASCADE)
 
-#     ride = models.ForeignKey(Ride, on_delete=models.CASCADE)
+    def __str__(self):
+        return self.name
