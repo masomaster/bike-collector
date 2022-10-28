@@ -75,7 +75,7 @@ class Ride(models.Model):
         ordering = ['date']
 
     def get_absolute_url(self):
-        return reverse('ride_detail', kwargs={'pk': self.id})
+        return reverse('ride_detail', kwargs={'ride_id': self.id})
 
 # class NutritionPlan(models.Model):
 #     nutrient = models.ManyToManyField(Nutrition)

@@ -80,7 +80,16 @@ def ride_detail(request, ride_id):
     route = Route.objects.get(id=ride.route.id)
     bike = Bike.objects.get(id=ride.bike.id)
     nutrition_form = NutritionForm()
-    return render(request, 'rides/detail.html', {'ride': ride, 'nutrition': nutrition, 'route': route, 'bike': bike, 'nutrition_form': nutrition_form})
+    id_list = ride.nutrition.all().values_list('id')
+    nutrition_not_on_ride = Nutrition.objects.exclude(id__in=id_list)
+    context = {
+        'ride': ride, 
+        'route': route, 
+        'bike': bike, 
+        'nutrition_form': nutrition_form, 
+        'nutrition': nutrition_not_on_ride,
+    }
+    return render(request, 'rides/detail.html', context)
 
 class RideUpdate(UpdateView):
     model = Ride
@@ -89,3 +98,7 @@ class RideUpdate(UpdateView):
 class RideDelete(DeleteView):
     model = Ride
     success_url = '/rides/'
+
+def assoc_nutrition(request, ride_id, nutrition_id):
+    Ride.objects.get(id=ride_id).nutrition.add(nutrition_id)
+    return redirect('ride_detail', ride_id=ride_id)
