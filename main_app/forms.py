@@ -9,7 +9,7 @@ class RideForm(ModelForm):
 class NutritionForm(ModelForm):
     class Meta:
         model = Nutrition
-        fields = ['name', 'calories', 'type']
+        fields = ['name', 'carbs', 'type']
 
 class NutritionPlanForm(ModelForm):
     class Meta:

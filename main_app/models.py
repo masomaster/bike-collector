@@ -43,7 +43,7 @@ class Route(models.Model):
 
 class Nutrition(models.Model):
     name = models.CharField(max_length=100)
-    calories = models.IntegerField('Calories per serving/bottle')
+    carbs = models.IntegerField('Grams of carbs per serving/bottle')
     type = models.CharField(
         max_length=1,
         choices=NUTRITION_TYPES,
@@ -59,6 +59,7 @@ class Nutrition(models.Model):
 class Ride(models.Model):
     title = models.CharField(max_length=100)
     date = models.DateField()
+    est_time = models.IntegerField('Estimated time (in hrs)')
     type = models.CharField(
         max_length=1,
         choices=RIDE_TYPES,

@@ -83,14 +83,15 @@ def ride_detail(request, ride_id):
     nutrition_form = NutritionForm()
     nutrition_plan_form = NutritionPlanForm()
     
-    def total_calories(ride):
+    def total_carbs(ride):
         total = 0
         for plan in ride.nutritionplan_set.all():
             for nutrient in plan.nutrition.all():
-                total += nutrient.calories
+                total += nutrient.carbs
         return total
     
-    total_calories = total_calories(ride)
+    total_carbs = total_carbs(ride)
+    carbs_per_hr = round((total_carbs / ride.est_time), 1)
     context = {
         'ride': ride, 
         'route': route, 
@@ -98,7 +99,8 @@ def ride_detail(request, ride_id):
         'nutrition_form': nutrition_form, 
         'nutrition_plan_form': nutrition_plan_form,
         'nutrition': nutrition,
-        'total_calories': total_calories,
+        'total_carbs': total_carbs,
+        'carbs_per_hr': carbs_per_hr,
     }
     return render(request, 'rides/detail.html', context)
 
