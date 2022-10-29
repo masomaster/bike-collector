@@ -78,25 +78,14 @@
       <input type="submit" value="Add to Plan" class="btn">
     </form>
 
-    <!-- {% if nutrition.count %}
-      {% for nutrient in nutrition.all %}
-        <div class="card">
-          <div class="card-content">
-            <span class="card-title">
-              {{ nutrient.name }}: {{ nutrient.calories }} calories
-            </span>
-          </div>
-          <div class="card-action">
-            <form action="" method="POST">
-              {% csrf_token %}
-              <button type="submit" class="btn">Add</button>
-            </form>
-          </div>
-        </div>
-      {% endfor %}
-    {% else %}
-      <h5>Ride Already Has All Nutrition Available</h5>
-    {% endif %} -->
+    <h3>Create New Nutrition Item</h3>
+    <form action="{% url 'create_nutrition' ride.id %}" method="POST">
+      {% csrf_token %}
+      <table>
+        {{ nutrition_form.as_table }}
+      </table>
+      <input type="submit" value="Create New Item" class="btn">
+    </form>
   </div>
 </div>
 <hr>

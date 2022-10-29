@@ -120,3 +120,11 @@ def add_nutrition_plan(request, ride_id):
         for nutrient in nutrient_list:
             new_np.nutrition.add(nutrient)
     return redirect('ride_detail', ride_id=ride_id)
+
+def create_nutrition(request, ride_id):
+    print("we got to views!")
+    form = NutritionForm(request.POST)
+    if form.is_valid():
+        new_nutrient = form.save(commit=False)
+        new_nutrient.save()
+    return redirect('ride_detail', ride_id=ride_id)

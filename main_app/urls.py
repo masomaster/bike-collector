@@ -20,6 +20,6 @@ urlpatterns = [
     path('rides/<int:ride_id>', views.ride_detail, name='ride_detail'),
     path('rides/<int:pk>/update', views.RideUpdate.as_view(), name='rides_update'),
     path('rides/<int:pk>/delete/', views.RideDelete.as_view(), name='rides_delete'),
-    # path('rides/<int:ride_id>/assoc_nutrition/<int:nutrition_id>', views.assoc_nutrition, name='assoc_nutrition')
+    path('rides/<int:ride_id>/createnutrition', views.create_nutrition, name='create_nutrition'),
     path('rides/<int:ride_id>/add_nutrition_plan/', views.add_nutrition_plan, name='add_nutrition_plan')
 ]
