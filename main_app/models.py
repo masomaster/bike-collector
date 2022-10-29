@@ -63,7 +63,7 @@ class Ride(models.Model):
     type = models.CharField(
         max_length=1,
         choices=RIDE_TYPES,
-        default=RIDE_TYPES[0][0]
+        default=RIDE_TYPES[0][0],
     )
     bike = models.ForeignKey(Bike, on_delete=models.CASCADE)
     route = models.ForeignKey(Route, on_delete=models.CASCADE)
