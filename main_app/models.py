@@ -83,3 +83,6 @@ class NutritionPlan(models.Model):
 
     def __str__(self):
         return f"Nutrition at {self.time} on {self.ride}"
+
+    class Meta:
+        ordering = ['time']

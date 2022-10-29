@@ -5,7 +5,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 
 from .models import Bike, Ride, Route, Nutrition
-from .forms import RideForm, NutritionForm
+from .forms import NutritionPlanForm, RideForm, NutritionForm
 
 def home(request):
     return render(request, 'home.html')
@@ -75,19 +75,30 @@ class RideDetail(DetailView):
     fields = '__all__'
 
 def ride_detail(request, ride_id):
+
     ride = Ride.objects.get(id=ride_id)
-    nutrition = Nutrition.objects.all()
     route = Route.objects.get(id=ride.route.id)
     bike = Bike.objects.get(id=ride.bike.id)
+    nutrition = Nutrition.objects.all()
     nutrition_form = NutritionForm()
-    id_list = ride.nutrition.all().values_list('id')
-    nutrition_not_on_ride = Nutrition.objects.exclude(id__in=id_list)
+    nutrition_plan_form = NutritionPlanForm()
+    
+    def total_calories(ride):
+        total = 0
+        for plan in ride.nutritionplan_set.all():
+            for nutrient in plan.nutrition.all():
+                total += nutrient.calories
+        return total
+    
+    total_calories = total_calories(ride)
     context = {
         'ride': ride, 
         'route': route, 
         'bike': bike, 
         'nutrition_form': nutrition_form, 
-        'nutrition': nutrition_not_on_ride,
+        'nutrition_plan_form': nutrition_plan_form,
+        'nutrition': nutrition,
+        'total_calories': total_calories,
     }
     return render(request, 'rides/detail.html', context)
 
@@ -99,6 +110,13 @@ class RideDelete(DeleteView):
     model = Ride
     success_url = '/rides/'
 
-def assoc_nutrition(request, ride_id, nutrition_id):
-    Ride.objects.get(id=ride_id).nutrition.add(nutrition_id)
+def add_nutrition_plan(request, ride_id):
+    form = NutritionPlanForm(request.POST)
+    nutrient_list = request.POST.getlist('nutrition')
+    if form.is_valid():
+        new_np = form.save(commit=False)
+        new_np.ride_id = ride_id
+        new_np.save()
+        for nutrient in nutrient_list:
+            new_np.nutrition.add(nutrient)
     return redirect('ride_detail', ride_id=ride_id)

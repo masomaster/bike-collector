@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from .models import Ride, Route, Nutrition
+from .models import NutritionPlan, Ride, Route, Nutrition
 
 class RideForm(ModelForm):
     class Meta:
@@ -10,3 +10,8 @@ class NutritionForm(ModelForm):
     class Meta:
         model = Nutrition
         fields = ['name', 'calories', 'type']
+
+class NutritionPlanForm(ModelForm):
+    class Meta:
+        model = NutritionPlan
+        fields = ['time', 'nutrition']
